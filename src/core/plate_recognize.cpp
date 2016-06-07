@@ -15,6 +15,7 @@ CPlateRecognize::CPlateRecognize() {
 int CPlateRecognize::plateRecognize(Mat src, std::vector<string> &licenseVec) {
   // 车牌方块集合
   vector<CPlate> plateVec;
+  vector<CPlate> truePlateVec;
 
   // 进行深度定位，使用颜色信息与二次Sobel
   int resultPD = plateDetect(src, plateVec, getPDDebug(), 0);
@@ -37,6 +38,12 @@ int CPlateRecognize::plateRecognize(Mat src, std::vector<string> &licenseVec) {
       if (resultCR == 0) {
         string license = plateType + ":" + plateIdentify;
         licenseVec.push_back(license);
+        truePlateVec.push_back(item);
+        //RotatedRect rec_roi = item.getPlatePos();
+        //double angle = rec_roi.angle;
+        //Point pt = rec_roi.center;
+        //Size platesize = rec_roi.size;
+        //std::cout << angle << " " << platesize.width << "  "  << platesize.height << std::endl;
       }
     }
     //完整识别过程到此结束
@@ -45,9 +52,10 @@ int CPlateRecognize::plateRecognize(Mat src, std::vector<string> &licenseVec) {
     if (getPDDebug() == true) {
       Mat result;
       src.copyTo(result);
+      int truenum = truePlateVec.size();
 
-      for (int j = 0; j < num; j++) {
-        CPlate item = plateVec[j];
+      for (int j = 0; j < truenum; j++) {
+        CPlate item = truePlateVec[j];
         Mat plate = item.getPlateMat();
 
         int height = 36;
@@ -62,6 +70,7 @@ int CPlateRecognize::plateRecognize(Mat src, std::vector<string> &licenseVec) {
         Point2f rect_points[4];
         minRect.points(rect_points);
 
+
         Scalar lineColor = Scalar(255, 255, 255);
 
         if (item.getPlateLocateType() == SOBEL) lineColor = Scalar(255, 0, 0);
@@ -74,7 +83,8 @@ int CPlateRecognize::plateRecognize(Mat src, std::vector<string> &licenseVec) {
       }
 
       //显示定位框的图片
-      showResult(result);
+      //showResult(result);
+      imwrite("result.jpg", result);
     }
   }
 

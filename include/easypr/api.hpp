@@ -52,7 +52,8 @@ static std::vector<std::string> plate_recognize(const char* image,
   pr.LoadSVM(model_svm);
   pr.LoadANN(model_ann);
   pr.setLifemode(life_mode);
-  pr.setDebug(false);
+  //pr.setDebug(false);
+  pr.setDebug(true);
 
   std::vector<std::string> results;
   pr.plateRecognize(img, results);

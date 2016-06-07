@@ -52,6 +52,7 @@ int CPlateJudge::plateJudge(const Mat& inMat, int& result) {
   p.convertTo(p, CV_32FC1);
 
   float response = svm.predict(p);
+  //std::cout << svm.predict(p,true) << std::endl;
   result = (int)response;
 
   return 0;
@@ -81,6 +82,7 @@ int CPlateJudge::plateJudge(const vector<CPlate>& inVec,
 
     int response = -1;
     plateJudge(inMat, response);
+    //std::cout << response << std::endl;
 
     if (response == 1)
       resultVec.push_back(inPlate);

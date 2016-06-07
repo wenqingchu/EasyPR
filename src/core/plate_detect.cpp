@@ -77,10 +77,81 @@ int CPlateDetect::plateDetect(Mat src, vector<CPlate>& resultVec,
     }
   }
 
+
+
+  // do nms
+
+
+  int ix1,iy1,ix2,iy2,iarea;
+  int xx1,yy1,xx2,yy2;
+  int max_w, max_h;
+  int plate_num = all_result_Plates.size();
+  vector<int> suppressed(plate_num, 0);
+  vector<int> x1(plate_num, 0);
+  vector<int> y1(plate_num, 0);
+  vector<int> x2(plate_num, 0);
+  vector<int> y2(plate_num, 0);
+  vector<int> areas(plate_num, 0);
+  float inter,ovr;
+  float thresh = 0.5;
+  
+  for (int i = 0; i < plate_num; i++) {
+    RotatedRect rec_roi = all_result_Plates[i].getPlatePos();
+    Point pt = rec_roi.center;
+    Size plate_size = rec_roi.size;
+    if (std::fabs(rec_roi.angle) > 45) {
+      x1[i] = pt.x - plate_size.width / 2;
+      y1[i] = pt.y - plate_size.height / 2;
+      x2[i] = pt.x + plate_size.width / 2;
+      y2[i] = pt.y + plate_size.height / 2;      
+    }
+    else {
+      x1[i] = pt.x - plate_size.height / 2;
+      y1[i] = pt.y - plate_size.width / 2;
+      x2[i] = pt.x + plate_size.height / 2;
+      y2[i] = pt.y + plate_size.width / 2;         
+    }
+    areas[i] = plate_size.width * plate_size.height;
+  }
+
+  for (int i=0; i < plate_num; i++) {
+    if (suppressed[i] == 1) {
+      continue;
+    }
+    ix1 = x1[i];
+    iy1 = y1[i];
+    ix2 = x2[i];
+    iy2 = y2[i];
+    iarea = areas[i];
+
+    for (int j=i+1; j < plate_num; j++) {
+      if (suppressed[j] == 1) {
+        continue;
+      }
+      xx1 = std::max(ix1, x1[j]);
+      yy1 = std::max(iy1, y1[j]);
+      xx2 = std::min(ix2, x2[j]);
+      yy2 = std::min(iy2, y2[j]);
+      max_w = std::max(0, xx2 - xx1 + 1);
+      max_h = std::max(0, yy2 - yy1 + 1);
+      inter = 1.0 * max_w * max_h;
+      ovr = inter / (iarea + areas[j] - inter);
+      if (ovr >= thresh) {
+        suppressed[j] = 1;
+      }
+    }
+  }
+
+
+
+
   for (size_t i = 0; i < all_result_Plates.size(); i++) {
     // 把截取的车牌图像依次放到左上角
     CPlate plate = all_result_Plates[i];
-    resultVec.push_back(plate);
+    if (suppressed[i] == 0) {
+      resultVec.push_back(plate);
+    }
+    
   }
   return 0;
 }

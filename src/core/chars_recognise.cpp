@@ -30,6 +30,7 @@ int CCharsRecognise::charsRecognise(Mat plate, string& plateLicense) {
   string plateIdentify = "";
 
   int result = m_charsSegment->charsSegment(plate, matVec);
+  int string_length = 0;
   if (result == 0) {
     int num = matVec.size();
     for (int j = 0; j < num; j++) {
@@ -45,12 +46,18 @@ int CCharsRecognise::charsRecognise(Mat plate, string& plateLicense) {
           m_charsIdentify->charsIdentify(charMat, isChinses, isSpeci);
 
       plateIdentify = plateIdentify + charcater;
+      string_length ++;
+      //std::cout << plateIdentify << std::endl;
+      //std::cout << " size:  " << plateIdentify.size() << std::endl;
     }
   }
 
   plateLicense = plateIdentify;
-
-  if (plateLicense.size() < 7) {
+  //std::cout << plateLicense << std::endl;
+  //std::cout << plateLicense.size() << std::endl;
+  
+  
+  if (plateLicense.size() < 8) {
     return -1;
   }
 
