@@ -35,8 +35,33 @@ int CPlateRecognize::plateRecognize(Mat src, std::vector<string> &licenseVec) {
       //获取车牌号
       string plateIdentify = "";
       int resultCR = charsRecognise(plate, plateIdentify);
+      vector<int> plate_pos(4,0);
       if (resultCR == 0) {
-        string license = plateType + ":" + plateIdentify;
+        RotatedRect rec_roi = item.getPlatePos();
+        double angle = rec_roi.angle;
+        Point pt = rec_roi.center;
+        Size platesize = rec_roi.size;
+        if (std::fabs(rec_roi.angle) < 45) {
+          plate_pos[0] = pt.x - platesize.width / 2;
+          plate_pos[1] = pt.x + platesize.width / 2;
+          plate_pos[2] = pt.y - platesize.height / 2;
+          plate_pos[3] = pt.y + platesize.height / 2;
+        }
+        else {
+          plate_pos[0] = pt.x - platesize.height / 2;
+          plate_pos[1] = pt.x + platesize.height / 2;
+          plate_pos[2] = pt.y - platesize.width / 2;
+          plate_pos[3] = pt.y + platesize.width / 2;          
+        }
+        string license = plateIdentify;
+        stringstream ss;
+        for (int _i=0; _i < plate_pos.size(); _i++) {
+          ss << plate_pos[_i];
+          license = license + " " + ss.str();
+          ss.str("");
+        }
+        
+        //string license = plateType + ":" + plateIdentify;
         licenseVec.push_back(license);
         truePlateVec.push_back(item);
         //RotatedRect rec_roi = item.getPlatePos();
@@ -84,7 +109,7 @@ int CPlateRecognize::plateRecognize(Mat src, std::vector<string> &licenseVec) {
 
       //显示定位框的图片
       //showResult(result);
-      imwrite("result.jpg", result);
+      //imwrite("result.jpg", result);
     }
   }
 
