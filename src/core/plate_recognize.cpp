@@ -57,13 +57,16 @@ int CPlateRecognize::plateRecognize(Mat src, std::vector<string> &licenseVec) {
         stringstream ss;
         for (int _i=0; _i < plate_pos.size(); _i++) {
           ss << plate_pos[_i];
-          license = license + " " + ss.str();
+          //license = license + " " + ss.str();
           ss.str("");
         }
         
         //string license = plateType + ":" + plateIdentify;
         licenseVec.push_back(license);
         truePlateVec.push_back(item);
+        
+        break;
+
         //RotatedRect rec_roi = item.getPlatePos();
         //double angle = rec_roi.angle;
         //Point pt = rec_roi.center;
@@ -74,6 +77,7 @@ int CPlateRecognize::plateRecognize(Mat src, std::vector<string> &licenseVec) {
     //完整识别过程到此结束
 
     //如果是Debug模式，则还需要将定位的图片显示在原图左上角
+    /*
     if (getPDDebug() == true) {
       Mat result;
       src.copyTo(result);
@@ -111,6 +115,7 @@ int CPlateRecognize::plateRecognize(Mat src, std::vector<string> &licenseVec) {
       //showResult(result);
       //imwrite("result.jpg", result);
     }
+    */
   }
 
   return resultPD;

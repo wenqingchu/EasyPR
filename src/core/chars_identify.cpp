@@ -1,6 +1,5 @@
 #include "easypr/chars_identify.h"
 #include "easypr/core_func.h"
-
 /*! \namespace easypr
         Namespace where all the C++ EasyPR functionality resides
         */
@@ -39,8 +38,8 @@ CCharsIdentify::CCharsIdentify() {
   LoadModel();
 
   typedef pair<string, string> CodeProvince;
-
-  if (m_map.empty()) {
+/*
+   if (m_map.empty()) {
     m_map.insert(CodeProvince("zh_cuan", "¥®"));
     m_map.insert(CodeProvince("zh_e", "∂ı"));
     m_map.insert(CodeProvince("zh_gan", "∏”"));
@@ -73,6 +72,42 @@ CCharsIdentify::CCharsIdentify() {
     m_map.insert(CodeProvince("zh_zang", "≤ÿ"));
     m_map.insert(CodeProvince("zh_zhe", "’„"));
   }
+  */
+  
+   if (m_map.empty()) {
+    m_map.insert(CodeProvince("zh_cuan", "1"));
+    m_map.insert(CodeProvince("zh_e", "2"));
+    m_map.insert(CodeProvince("zh_gan", "3"));
+    m_map.insert(CodeProvince("zh_gan1", "4"));
+    m_map.insert(CodeProvince("zh_gui", "5"));
+    m_map.insert(CodeProvince("zh_gui1", "6"));
+    m_map.insert(CodeProvince("zh_hei", "7"));
+    m_map.insert(CodeProvince("zh_hu", "8"));
+    m_map.insert(CodeProvince("zh_ji", "9"));
+    m_map.insert(CodeProvince("zh_jin", "a"));
+    m_map.insert(CodeProvince("zh_jing", "b"));
+    m_map.insert(CodeProvince("zh_jl", "c"));
+    m_map.insert(CodeProvince("zh_liao", "d"));
+    m_map.insert(CodeProvince("zh_lu", "e"));
+    m_map.insert(CodeProvince("zh_meng", "f"));
+    m_map.insert(CodeProvince("zh_min", "g"));
+    m_map.insert(CodeProvince("zh_ning", "h"));
+    m_map.insert(CodeProvince("zh_qing", "i"));
+    m_map.insert(CodeProvince("zh_qiong", "j"));
+    m_map.insert(CodeProvince("zh_shan", "k"));
+    m_map.insert(CodeProvince("zh_su", "l"));
+    m_map.insert(CodeProvince("zh_sx", "m"));
+    m_map.insert(CodeProvince("zh_wan", "n"));
+    m_map.insert(CodeProvince("zh_xiang", "o"));
+    m_map.insert(CodeProvince("zh_xin", "p"));
+    m_map.insert(CodeProvince("zh_yu", "q"));
+    m_map.insert(CodeProvince("zh_yu1", "r"));
+    m_map.insert(CodeProvince("zh_yue", "s"));
+    m_map.insert(CodeProvince("zh_yun", "t"));
+    m_map.insert(CodeProvince("zh_zang", "u"));
+    m_map.insert(CodeProvince("zh_zhe", "v"));
+  }
+  
 }
 
 void CCharsIdentify::LoadModel() {

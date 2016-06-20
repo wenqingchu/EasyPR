@@ -35,7 +35,15 @@ int CCharsRecognise::charsRecognise(Mat plate, string& plateLicense) {
     int num = matVec.size();
     for (int j = 0; j < num; j++) {
       Mat charMat = matVec[j];
+      
+       stringstream ss;
+       ss<<j;
+       string s1 = ss.str() + ".jpg";
+       s1 = "tmp_character/" + s1;
+       imwrite(s1.c_str(), charMat);
+      
       bool isChinses = false;
+
       bool isSpeci = false;
 
       //默认首个字符块是中文字符
@@ -47,7 +55,7 @@ int CCharsRecognise::charsRecognise(Mat plate, string& plateLicense) {
 
       plateIdentify = plateIdentify + charcater;
       string_length ++;
-      //std::cout << plateIdentify << std::endl;
+      // std::cout << plateIdentify << std::endl;
       //std::cout << " size:  " << plateIdentify.size() << std::endl;
     }
   }
@@ -57,7 +65,7 @@ int CCharsRecognise::charsRecognise(Mat plate, string& plateLicense) {
   //std::cout << plateLicense.size() << std::endl;
   
   
-  if (plateLicense.size() < 8) {
+  if (plateLicense.size() < 7) {
     return -1;
   }
 
