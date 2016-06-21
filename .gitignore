@@ -1,4 +1,10 @@
 
+#ignore data and model weight
+/results/
+/tmp_characte/
+/resources/cnn_image/
+/resources/model/
+
 #ignore thumbnails created by windows
 Thumbs.db
 #Ignore files build by Visual Studio
